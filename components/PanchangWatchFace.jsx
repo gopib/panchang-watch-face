@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Info } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { getPanchangData } from '../utils/panchangApi';
-import MuhurtamDetails from './MuhurtamDetails';
 
 const PanchangWatchFace = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [batteryLevel] = useState(85);
   const [panchangData, setPanchangData] = useState(null);
-  const [showMuhurtam, setShowMuhurtam] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -43,19 +41,10 @@ const PanchangWatchFace = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4 overflow-auto">
       {/* Watch Container */}
-      <div className="relative w-[480px] h-[480px] rounded-full bg-black border-8 border-gray-700 shadow-2xl overflow-hidden">
+      <div className="relative w-[480px] min-h-[480px] rounded-3xl bg-black border-8 border-gray-700 shadow-2xl overflow-y-auto overflow-x-hidden" style={{maxHeight: '90vh'}}>
         
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-black to-blue-900/20"></div>
-        
-        {/* Info button for Muhurtam details */}
-        <button
-          onClick={() => setShowMuhurtam(true)}
-          className="absolute top-3 left-3 z-10 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 rounded-full p-1.5 transition-colors"
-          title="View Muhurtam Details"
-        >
-          <Info className="w-3 h-3 text-blue-300" />
-        </button>
         
         {/* Status bar */}
         <div className="absolute top-3 left-0 right-0 flex justify-between items-center px-8 text-xs text-gray-400">
@@ -168,6 +157,113 @@ const PanchangWatchFace = () => {
           </div>
         </div>
 
+        {/* Muhurtam Details Section - Scrollable */}
+        <div className="absolute top-[370px] left-0 right-0 px-8 pb-6">
+          <div className="text-center mb-3">
+            <h3 className="text-sm font-bold text-orange-300 mb-1">Muhurtam Details</h3>
+            <div className="text-[9px] text-gray-500">Scroll down for all details ↓</div>
+          </div>
+
+          {/* Inauspicious Times */}
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-red-400 mb-2 flex items-center gap-1">
+              <span>⚠️</span> Inauspicious Times
+            </h4>
+
+            {/* Rahu Kalam */}
+            <div className="bg-red-900/30 border border-red-500/40 rounded-lg p-2.5 mb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-red-300 font-semibold">Rahu Kalam</div>
+                  <div className="text-[9px] text-gray-400">రాహు కాలం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.rahuKalam}</div>
+              </div>
+            </div>
+
+            {/* Yama Gandam */}
+            <div className="bg-orange-900/30 border border-orange-500/40 rounded-lg p-2.5 mb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-orange-300 font-semibold">Yama Gandam</div>
+                  <div className="text-[9px] text-gray-400">యమ గండం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.yamaGandam}</div>
+              </div>
+            </div>
+
+            {/* Durmuhurtam */}
+            <div className="bg-yellow-900/30 border border-yellow-500/40 rounded-lg p-2.5">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-yellow-300 font-semibold">Durmuhurtam</div>
+                  <div className="text-[9px] text-gray-400">దుర్ముహూర్తం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.durmuhurtam}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Auspicious Times */}
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-green-400 mb-2 flex items-center gap-1">
+              <span>✨</span> Shubha Muhurtamulu
+            </h4>
+
+            {/* Brahma Muhurtam */}
+            <div className="bg-green-900/30 border border-green-500/40 rounded-lg p-2.5 mb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-green-300 font-semibold">Brahma Muhurtam</div>
+                  <div className="text-[9px] text-gray-400">బ్రహ్మ మహూర్తం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.brahmaMuhurtam}</div>
+              </div>
+            </div>
+
+            {/* Abhijit Muhurtam */}
+            <div className="bg-blue-900/30 border border-blue-500/40 rounded-lg p-2.5 mb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-blue-300 font-semibold">Abhijit Muhurtam</div>
+                  <div className="text-[9px] text-gray-400">అభిజిత్ ముహూర్తం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.abhijitMuhurtam}</div>
+              </div>
+            </div>
+
+            {/* Vijaya Muhurtam */}
+            <div className="bg-emerald-900/30 border border-emerald-500/40 rounded-lg p-2.5 mb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-emerald-300 font-semibold">Vijaya Muhurtam</div>
+                  <div className="text-[9px] text-gray-400">విజయ ముహూర్తం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.vijayaMuhurtam}</div>
+              </div>
+            </div>
+
+            {/* Godhuli Muhurtam */}
+            <div className="bg-amber-900/30 border border-amber-500/40 rounded-lg p-2.5">
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-amber-300 font-semibold">Godhuli Muhurtam</div>
+                  <div className="text-[9px] text-gray-400">గోధూళి ముహూర్తం</div>
+                </div>
+                <div className="text-[11px] text-white font-mono">{panchangData.godhuliMuhurtam}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Note */}
+          <div className="p-3 bg-gray-800/50 rounded-lg border border-gray-600/30">
+            <p className="text-[9px] text-gray-400 text-center leading-relaxed">
+              ⚠️ Avoid starting important activities during inauspicious times.<br/>
+              ✨ Brahma Muhurtam is ideal for spiritual practices & meditation.
+            </p>
+          </div>
+        </div>
+
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           {[...Array(12)].map((_, i) => (
@@ -183,14 +279,6 @@ const PanchangWatchFace = () => {
           ))}
         </div>
       </div>
-
-      {/* Muhurtam Details Modal */}
-      {showMuhurtam && (
-        <MuhurtamDetails 
-          panchangData={panchangData} 
-          onClose={() => setShowMuhurtam(false)} 
-        />
-      )}
     </div>
   );
 };
